@@ -7,4 +7,5 @@ export const databaseConfig = {
   database: 'postgres',
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: true,
+  useUTC: true,
 };
