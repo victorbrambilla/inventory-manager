@@ -6,7 +6,7 @@ import {
   CreateStockInput,
   UpdateStockInput,
 } from 'src/stock/inputs/stock-input';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class StockService {
@@ -23,11 +23,11 @@ export class StockService {
     const where: any = {};
     if (args.filter) {
       args.filter.forEach((filter) => {
+        if (!filter.value) return;
         where[filter.by] = {};
-        where[filter.by][`$${filter.operator}`] = filter.value;
+        where[filter.by] = Like(`%${filter.value}%`);
       });
     }
-
     return this.stockRepository.find({
       where,
       order,

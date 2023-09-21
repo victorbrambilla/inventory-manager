@@ -6,7 +6,7 @@ import { Exit } from 'src/exit/exit.entity';
 import { CreateExitInput, UpdateExitInput } from 'src/exit/inputs/exit-input';
 import { FoodService } from 'src/food/food.service';
 import { StockService } from 'src/stock/stock.service';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class ExitService {
@@ -29,8 +29,9 @@ export class ExitService {
     const where: any = {};
     if (args.filter) {
       args.filter.forEach((filter) => {
+        if (!filter.value) return;
         where[filter.by] = {};
-        where[filter.by][`$${filter.operator}`] = filter.value;
+        where[filter.by] = Like(`%${filter.value}%`);
       });
     }
 

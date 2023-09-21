@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 import { HttpException, Injectable } from '@nestjs/common';
 import { FoodService } from 'src/food/food.service';
@@ -30,8 +30,9 @@ export class EntryService {
     const where: any = {};
     if (args.filter) {
       args.filter.forEach((filter) => {
+        if (!filter.value) return;
         where[filter.by] = {};
-        where[filter.by][`$${filter.operator}`] = filter.value;
+        where[filter.by] = Like(`%${filter.value}%`);
       });
     }
 
