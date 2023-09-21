@@ -14,9 +14,6 @@ export class FilterArgs {
   @Field(() => String)
   by: string;
 
-  @Field(() => String)
-  operator: string;
-
   @Field(() => String || Number)
   value: string | number;
 }
