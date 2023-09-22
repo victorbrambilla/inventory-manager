@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Stock } from 'src/Stock/Stock.entity';
+import { Stock } from 'src/stock/stock.entity';
 import { QueryArgs } from 'src/common/dto/query.args';
 import {
   CreateStockInput,
