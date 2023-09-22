@@ -25,7 +25,6 @@ export class Food {
   @Column()
   unitId: number;
 
-  @Field(() => [Unit], { nullable: true })
   @ManyToOne(() => Unit, (unit) => unit.foods)
   unit?: Unit;
 

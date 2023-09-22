@@ -37,8 +37,8 @@ type Food {
   id: ID!
   name: String!
   unitId: Float!
-  unit: [Unit!]
   entries: [Entry!]
+  unit: Unit!
 }
 
 type Unit {
