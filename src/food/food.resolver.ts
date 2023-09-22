@@ -6,6 +6,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import { QueryArgs } from 'src/common/dto/query.args';
 import { Entry } from 'src/entry/entry.entity';
 import { EntryService } from 'src/entry/entry.service';
 
@@ -24,8 +25,8 @@ export class FoodResolver {
   ) {}
 
   @Query(() => [Food])
-  async foods(): Promise<Food[]> {
-    return this.foodService.findAll();
+  async foods(@Args() args?: QueryArgs): Promise<Food[]> {
+    return this.foodService.findAll(args);
   }
 
   @Query(() => Food)

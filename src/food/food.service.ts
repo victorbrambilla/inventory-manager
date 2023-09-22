@@ -1,9 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { QueryArgs } from 'src/common/dto/query.args';
 import { Food } from 'src/food/food.entity';
 import { CreateFoodInput, UpdateFoodInput } from 'src/food/inputs/food-input';
 import { UnitService } from 'src/unit/unit.service';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class FoodService {
@@ -13,8 +14,23 @@ export class FoodService {
     private unitService: UnitService,
   ) {}
 
-  async findAll(): Promise<Food[]> {
-    return this.foodRepository.find();
+  async findAll(args?: QueryArgs): Promise<Food[]> {
+    const order: any = {};
+    if (args.sort) {
+      order[args.sort.by] = args.sort.order;
+    }
+    const where: any = {};
+    if (args.filter) {
+      args.filter.forEach((filter) => {
+        if (!filter.value) return;
+        where[filter.by] = {};
+        where[filter.by] = Like(`%${filter.value}%`);
+      });
+    }
+    return this.foodRepository.find({
+      where,
+      order,
+    });
   }
 
   async findOne(id: number): Promise<Food> {
