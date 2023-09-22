@@ -9,6 +9,8 @@ import { FoodModule } from './food/food.module';
 import { EntryModule } from './entry/entry.module';
 import { StockModule } from 'src/stock/stock.module';
 import { ExitModule } from './exit/exit.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronjobsModule } from './cronjobs/cronjobs.module';
 
 @Module({
   imports: [
@@ -18,11 +20,13 @@ import { ExitModule } from './exit/exit.module';
       autoSchemaFile: 'schema.gql',
     }),
     TypeOrmModule.forRoot(databaseConfig as ConnectionOptions),
+    ScheduleModule.forRoot(),
     UnitModule,
     FoodModule,
     EntryModule,
     StockModule,
     ExitModule,
+    CronjobsModule,
   ],
 })
 export class AppModule {}

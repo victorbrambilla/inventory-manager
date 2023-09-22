@@ -23,11 +23,11 @@ export class ExitService {
     filterByFoodName?: string | null,
   ): Promise<Exit[]> {
     const order: any = {};
-    if (args.sort) {
+    if (args?.sort) {
       order[args.sort.by] = args.sort.order;
     }
     const where: any = {};
-    if (args.filter) {
+    if (args?.filter) {
       args.filter.forEach((filter) => {
         if (!filter.value) return;
         where[filter.by] = {};
@@ -112,5 +112,18 @@ export class ExitService {
       where: { id },
     });
     return await this.exitRepository.remove(exitEntity);
+  }
+
+  async addExitForEntryExpirated(entryId: number): Promise<Exit> {
+    const entry = await this.entryService.findOne(entryId);
+    const exitEntity = new Exit();
+    exitEntity.stockId = entry.stockId;
+    exitEntity.entryId = entry.id;
+    exitEntity.quantity = entry.quantity;
+    exitEntity.foodId = entry.foodId;
+    await this.entryService.update(entryId, {
+      quantity: 0,
+    });
+    return await this.exitRepository.save(exitEntity);
   }
 }

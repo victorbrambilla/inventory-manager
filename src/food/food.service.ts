@@ -16,11 +16,11 @@ export class FoodService {
 
   async findAll(args?: QueryArgs): Promise<Food[]> {
     const order: any = {};
-    if (args.sort) {
+    if (args?.sort) {
       order[args.sort.by] = args.sort.order;
     }
     const where: any = {};
-    if (args.filter) {
+    if (args?.filter) {
       args.filter.forEach((filter) => {
         if (!filter.value) return;
         where[filter.by] = {};
