@@ -10,8 +10,8 @@ export class CronjobsService {
     private readonly exitService: ExitService,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_SECONDS, {
-    name: 'verifyEpirationDateOfEntries',
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
+    name: 'verifyExpirationDateOfEntries',
   })
   async updateEntriesStock() {
     const entries = await this.entryService.findAll();
