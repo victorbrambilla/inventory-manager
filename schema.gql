@@ -1,0 +1,132 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Stock {
+  id: ID!
+  name: String!
+}
+
+type Exit {
+  id: ID!
+  stockId: Float!
+  entryId: Float!
+  foodId: Float!
+  quantity: Float!
+  entry: Entry!
+  stock: Stock!
+}
+
+type Entry {
+  id: ID!
+  foodId: Float!
+  stockId: Float!
+  expirationDate: DateTime!
+  quantity: Float!
+  exits: [Exit!]
+  food: Food!
+  stock: Stock!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Food {
+  id: ID!
+  name: String!
+  unitId: Float!
+  unit: [Unit!]
+  entries: [Entry!]
+}
+
+type Unit {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  units: [Unit!]!
+  unit(id: Float!): Unit!
+  foods(sort: SortArgs, filter: [FilterArgs!]): [Food!]!
+  food(id: Float!): Food!
+  entries(sort: SortArgs, filter: [FilterArgs!], filterByFoodName: String): [Entry!]!
+  entry(id: Float!): Entry!
+  stocks(sort: SortArgs, filter: [FilterArgs!]): [Stock!]!
+  stock(id: Float!): Stock!
+  exits(sort: SortArgs, filter: [FilterArgs!], filterByFoodName: String): [Exit!]!
+  exit(id: Float!): Exit!
+}
+
+input SortArgs {
+  by: String!
+  order: String! = "ASC"
+}
+
+input FilterArgs {
+  by: String!
+  value: String!
+}
+
+type Mutation {
+  createUnit(data: CreateUnitInput!): Unit!
+  updateUnit(id: Float!, data: UpdateUnitInput!): Unit!
+  createFood(data: CreateFoodInput!): Food!
+  updateFood(id: Float!, data: UpdateFoodInput!): Food!
+  createEntry(data: CreateEntryInput!): Entry!
+  updateEntry(id: Float!, data: UpdateEntryInput!): Entry!
+  createStock(data: CreateStockInput!): Stock!
+  updateStock(id: Float!, data: UpdateStockInput!): Stock!
+  createExit(data: CreateExitInput!): Exit!
+  updateExit(id: Float!, data: UpdateExitInput!): Exit!
+}
+
+input CreateUnitInput {
+  name: String!
+}
+
+input UpdateUnitInput {
+  name: String
+}
+
+input CreateFoodInput {
+  name: String!
+  unitId: Float!
+}
+
+input UpdateFoodInput {
+  name: String
+  unitId: Float
+}
+
+input CreateEntryInput {
+  foodId: Float!
+  stockId: Float!
+  quantity: Float!
+  expirationDate: DateTime!
+}
+
+input UpdateEntryInput {
+  foodId: Float
+  stockId: Float
+  quantity: Float
+  expirationDate: DateTime
+}
+
+input CreateStockInput {
+  name: String!
+}
+
+input UpdateStockInput {
+  name: String
+}
+
+input CreateExitInput {
+  entryId: Float!
+  quantity: Float!
+}
+
+input UpdateExitInput {
+  stockId: Float
+}
