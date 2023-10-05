@@ -12,9 +12,14 @@ import { EntryService } from 'src/entry/entry.service';
 
 import { Food } from 'src/food/food.entity';
 import { FoodService } from 'src/food/food.service';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateFoodInput, UpdateFoodInput } from 'src/food/inputs/food-input';
+import { FoodOutput } from 'src/food/outputs/food-output';
 import { Unit } from 'src/unit/unit.entity';
 import { UnitService } from 'src/unit/unit.service';
+import { CurrentUser } from 'src/auth/decorators/currentUser.decorator';
+import { User } from 'src/users/user.entity';
 
 @Resolver(() => Food)
 export class FoodResolver {
@@ -24,13 +29,17 @@ export class FoodResolver {
     private readonly entryService: EntryService,
   ) {}
 
+  @UseGuards(GqlAuthGuard)
   @Query(() => [Food])
-  async foods(@Args() args?: QueryArgs): Promise<Food[]> {
+  async foods(
+    @CurrentUser() user: User,
+    @Args() args?: QueryArgs,
+  ): Promise<Food[]> {
     return this.foodService.findAll(args);
   }
 
-  @Query(() => Food)
-  async food(@Args('id') id: number): Promise<Food> {
+  @Query(() => FoodOutput)
+  async food(@Args('id') id: number): Promise<FoodOutput> {
     return this.foodService.findOne(id);
   }
 

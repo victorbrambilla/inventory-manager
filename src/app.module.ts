@@ -11,9 +11,13 @@ import { StockModule } from 'src/stock/stock.module';
 import { ExitModule } from './exit/exit.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronjobsModule } from './cronjobs/cronjobs.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver, // <--- "driver" should be here, as shown in the docs
       playground: true,
@@ -27,6 +31,8 @@ import { CronjobsModule } from './cronjobs/cronjobs.module';
     StockModule,
     ExitModule,
     CronjobsModule,
+    AuthModule,
+    UsersModule,
   ],
 })
 export class AppModule {}

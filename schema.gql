@@ -46,17 +46,45 @@ type Unit {
   name: String!
 }
 
+type FoodOutput {
+  name: String!
+  unitId: Float!
+  quantity: Float!
+  id: Float!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  role: String!
+}
+
+type AuthOutput {
+  user: User!
+  token: String!
+}
+
+type UserOutput {
+  id: Float!
+  email: String!
+  name: String!
+}
+
 type Query {
   units: [Unit!]!
   unit(id: Float!): Unit!
   foods(sort: SortArgs, filter: [FilterArgs!]): [Food!]!
-  food(id: Float!): Food!
+  food(id: Float!): FoodOutput!
   entries(sort: SortArgs, filter: [FilterArgs!], filterByFoodName: String): [Entry!]!
   entry(id: Float!): Entry!
   stocks(sort: SortArgs, filter: [FilterArgs!]): [Stock!]!
   stock(id: Float!): Stock!
   exits(sort: SortArgs, filter: [FilterArgs!], filterByFoodName: String): [Exit!]!
   exit(id: Float!): Exit!
+  user(id: Float!): User!
+  userByEmail(email: String!): UserOutput!
+  users: [UserOutput!]!
 }
 
 input SortArgs {
@@ -80,6 +108,10 @@ type Mutation {
   updateStock(id: Float!, data: UpdateStockInput!): Stock!
   createExit(data: CreateExitInput!): Exit!
   updateExit(id: Float!, data: UpdateExitInput!): Exit!
+  login(data: AuthInput!): AuthOutput!
+  createUser(data: CreateUserInput!): UserOutput!
+  updateUser(id: Float!, data: UpdateUserInput!): UserOutput!
+  deleteUser(id: Float!): Boolean!
 }
 
 input CreateUnitInput {
@@ -129,4 +161,21 @@ input CreateExitInput {
 
 input UpdateExitInput {
   stockId: Float
+}
+
+input AuthInput {
+  email: String!
+  password: String!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  id: String!
+  name: String!
+  email: String!
 }

@@ -12,6 +12,7 @@ import { EntryModule } from 'src/entry/entry.module';
     forwardRef(() => UnitModule),
     forwardRef(() => EntryModule),
   ],
+
   providers: [FoodService, FoodResolver],
   exports: [FoodService],
 })

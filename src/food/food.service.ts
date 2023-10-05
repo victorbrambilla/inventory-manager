@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { QueryArgs } from 'src/common/dto/query.args';
 import { Food } from 'src/food/food.entity';
 import { CreateFoodInput, UpdateFoodInput } from 'src/food/inputs/food-input';
+import { FoodOutput } from 'src/food/outputs/food-output';
 import { UnitService } from 'src/unit/unit.service';
 import { Like, Repository } from 'typeorm';
 
@@ -33,16 +34,26 @@ export class FoodService {
     });
   }
 
-  async findOne(id: number): Promise<Food> {
-    return this.foodRepository.findOne({
+  async findOne(id: number): Promise<FoodOutput> {
+    const food = await this.foodRepository.findOne({
       where: { id },
+      relations: ['entries'],
+      select: ['id', 'name', 'unitId'],
     });
+
+    return {
+      ...food,
+      quantity: food.entries.reduce((acc, entry) => acc + entry.quantity, 0),
+    };
   }
 
   async findOneByName(name: string): Promise<Food> {
-    return this.foodRepository.findOne({
+    const food = this.foodRepository.findOne({
       where: { name },
+      relations: ['entries'],
     });
+    console.log(food);
+    return food;
   }
 
   async create(food: CreateFoodInput): Promise<Food> {
